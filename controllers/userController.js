@@ -22,10 +22,10 @@ exports.createUser = async (req, res) => {
 };
 
 exports.loginUser = async (req, res) => {
-  const user = await prisma.user.findUnique({
-    where: { email: req.body.email },
-  });
   try {
+    const user = await prisma.user.findUnique({
+      where: { email: req.body.email },
+    });
     if (!user) {
       return res.status(401).json({ error: "Email not registered" });
     }
@@ -35,6 +35,20 @@ exports.loginUser = async (req, res) => {
     }
 
     return res.status(200).json(user);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+exports.getUsers = async (req, res) => {
+  try {
+    const users = await prisma.user.findMany({
+      select: {
+        email: true,
+        role: true,
+      },
+    });
+    return res.status(200).json(users);
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
