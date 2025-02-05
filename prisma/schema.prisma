@@ -19,9 +19,15 @@ enum UserRole {
   USER
 }
 
+enum UserStatus {
+  Blocked
+  Active
+}
+
 model User {
-  id       Int      @id @default(autoincrement())
-  email    String   @unique
+  id       Int        @id @default(autoincrement())
+  email    String     @unique
   password String
-  role     UserRole @default(USER)
+  role     UserRole   @default(USER)
+  status   UserStatus @default(Active)
 }
