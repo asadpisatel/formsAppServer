@@ -46,9 +46,31 @@ exports.getUsers = async (req, res) => {
       select: {
         email: true,
         role: true,
+        status: true,
       },
     });
     return res.status(200).json(users);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+exports.blockUsers = async (req, res) => {
+  try {
+    const { emails } = req.body;
+
+    const updatedUsers = await prisma.user.updateMany({
+      where: {
+        email: {
+          in: emails,
+        },
+      },
+      data: {
+        status: "Blocked",
+      },
+    });
+
+    return res.status(200).json(updatedUsers);
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
