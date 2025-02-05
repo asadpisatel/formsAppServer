@@ -46,7 +46,6 @@ exports.getUsers = async (req, res) => {
       select: {
         email: true,
         role: true,
-        status: true,
       },
     });
     return res.status(200).json(users);
