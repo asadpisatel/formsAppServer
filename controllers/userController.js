@@ -96,3 +96,21 @@ exports.unblockUsers = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
+exports.deleteUsers = async (req, res) => {
+  try {
+    const { emails } = req.body;
+
+    const updatedUsers = await prisma.user.deleteMany({
+      where: {
+        email: {
+          in: emails,
+        },
+      },
+    });
+
+    return res.status(200).json(updatedUsers);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
