@@ -114,3 +114,45 @@ exports.deleteUsers = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
+exports.makeAdminUsers = async (req, res) => {
+  try {
+    const { emails } = req.body;
+
+    const updatedUsers = await prisma.user.updateMany({
+      where: {
+        email: {
+          in: emails,
+        },
+      },
+      data: {
+        role: "ADMIN",
+      },
+    });
+
+    return res.status(200).json(updatedUsers);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+exports.removeAdminUsers = async (req, res) => {
+  try {
+    const { emails } = req.body;
+
+    const updatedUsers = await prisma.user.updateMany({
+      where: {
+        email: {
+          in: emails,
+        },
+      },
+      data: {
+        role: "USER",
+      },
+    });
+
+    return res.status(200).json(updatedUsers);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
