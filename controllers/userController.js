@@ -1,6 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const { hashSync, compareSync } = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const salt = 10;
 
 exports.createUser = async (req, res) => {
@@ -15,6 +16,16 @@ exports.createUser = async (req, res) => {
       },
     });
 
+    const token = jwt.sign(
+      { email: newUser.email, role: newUser.role, status: newUser.status },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    });
     return res.status(201).json(newUser);
   } catch (error) {
     return res.status(500).json({ error: error.message });
@@ -34,125 +45,28 @@ exports.loginUser = async (req, res) => {
       return res.status(403).json({ error: "Incorrect password" });
     }
 
+    const token = jwt.sign(
+      { email: user.email, role: user.role, status: user.status },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    });
     return res.status(200).json(user);
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
 };
 
-exports.getUsers = async (req, res) => {
-  try {
-    const users = await prisma.user.findMany({
-      select: {
-        email: true,
-        role: true,
-        status: true,
-      },
-    });
-    return res.status(200).json(users);
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
+exports.logoutUser = (req, res) => {
+  res.clearCookie("token");
+  return res.status(200).json({ message: "Logged out" });
 };
 
-exports.blockUsers = async (req, res) => {
-  try {
-    const { emails } = req.body;
-
-    const updatedUsers = await prisma.user.updateMany({
-      where: {
-        email: {
-          in: emails,
-        },
-      },
-      data: {
-        status: "Blocked",
-      },
-    });
-
-    return res.status(200).json(updatedUsers);
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-};
-
-exports.unblockUsers = async (req, res) => {
-  try {
-    const { emails } = req.body;
-
-    const updatedUsers = await prisma.user.updateMany({
-      where: {
-        email: {
-          in: emails,
-        },
-      },
-      data: {
-        status: "Active",
-      },
-    });
-
-    return res.status(200).json(updatedUsers);
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-};
-
-exports.deleteUsers = async (req, res) => {
-  try {
-    const { emails } = req.body;
-
-    const updatedUsers = await prisma.user.deleteMany({
-      where: {
-        email: {
-          in: emails,
-        },
-      },
-    });
-
-    return res.status(200).json(updatedUsers);
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-};
-
-exports.makeAdminUsers = async (req, res) => {
-  try {
-    const { emails } = req.body;
-
-    const updatedUsers = await prisma.user.updateMany({
-      where: {
-        email: {
-          in: emails,
-        },
-      },
-      data: {
-        role: "ADMIN",
-      },
-    });
-
-    return res.status(200).json(updatedUsers);
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-};
-
-exports.removeAdminUsers = async (req, res) => {
-  try {
-    const { emails } = req.body;
-
-    const updatedUsers = await prisma.user.updateMany({
-      where: {
-        email: {
-          in: emails,
-        },
-      },
-      data: {
-        role: "USER",
-      },
-    });
-
-    return res.status(200).json(updatedUsers);
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
+exports.getMe = (req, res) => {
+  if (!req.user) return res.status(401).json({ error: "Unauthorized" });
+  res.json(req.user);
 };
