@@ -17,7 +17,7 @@ exports.createUser = async (req, res) => {
     });
 
     const token = jwt.sign(
-      { email: newUser.email, role: newUser.role, status: newUser.status },
+      { id: newUser.id, role: newUser.role, status: newUser.status },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
@@ -47,7 +47,7 @@ exports.loginUser = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { email: user.email, role: user.role, status: user.status },
+      { id: user.id, role: user.role, status: user.status },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
