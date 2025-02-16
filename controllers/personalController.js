@@ -8,6 +8,7 @@ exports.templates = async (req, res) => {
         userId: req.body.userId,
       },
       select: {
+        id: true,
         title: true,
         createdAt: true,
       },
