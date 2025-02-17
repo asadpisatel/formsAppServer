@@ -25,6 +25,7 @@ app.use(cookieParser());
 app.use("/user", require("./routes/userRoute"));
 app.use("/admin", require("./routes/adminRoute"));
 app.use("/personal", require("./routes/personalRoute"));
+app.use("/template", require("./routes/templateRoute"));
 
 const port = process.env.PORT || 5000;
 

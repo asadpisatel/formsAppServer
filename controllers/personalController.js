@@ -5,7 +5,7 @@ exports.templates = async (req, res) => {
   try {
     const templates = await prisma.template.findMany({
       where: {
-        userId: req.body.userId,
+        userId: req.user.id,
       },
       select: {
         id: true,
