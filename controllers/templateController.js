@@ -1,6 +1,26 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
+exports.createTemplate = async (req, res) => {
+  try {
+    const { title, description, topic, userId, ...questions } = req.body;
+
+    const template = await prisma.template.create({
+      data: {
+        title,
+        description,
+        topic,
+        userId,
+        ...questions,
+      },
+    });
+
+    res.status(201).json(template);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 exports.checkTemplate = async (req, res) => {
   try {
     const { id } = req.body;
