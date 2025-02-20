@@ -26,6 +26,7 @@ app.use("/user", require("./routes/userRoute"));
 app.use("/admin", require("./routes/adminRoute"));
 app.use("/personal", require("./routes/personalRoute"));
 app.use("/template", require("./routes/templateRoute"));
+app.use("/home", require("./routes/homeRoute"));
 
 const port = process.env.PORT || 5000;
 
