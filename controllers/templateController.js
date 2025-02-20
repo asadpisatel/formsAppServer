@@ -46,7 +46,7 @@ exports.checkTemplate = async (req, res) => {
   }
 };
 
-exports.getTemplate = async (req, res) => {
+exports.getGeneralSettings = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -65,9 +65,10 @@ exports.getTemplate = async (req, res) => {
   }
 };
 
-exports.updateTemplate = async (req, res) => {
+exports.updateGeneralSettings = async (req, res) => {
+  const { id } = req.params;
   try {
-    const { id, title, description, topic } = req.body;
+    const { title, description, topic } = req.body;
 
     const updatedTemplate = await prisma.template.update({
       where: { id },
@@ -75,6 +76,36 @@ exports.updateTemplate = async (req, res) => {
     });
 
     return res.status(200).json({ template: updatedTemplate });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+exports.getQuestions = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const template = await prisma.template.findUnique({
+      where: { id: id },
+    });
+
+    return res.status(200).json(template);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+exports.updateQuestions = async (req, res) => {
+  const { id } = req.params;
+  const updateData = req.body;
+
+  try {
+    await prisma.template.update({
+      where: { id: id },
+      data: updateData,
+    });
+
+    return res.status(200).json({ message: "Questions updated successfully" });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
