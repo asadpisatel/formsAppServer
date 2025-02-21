@@ -9,6 +9,7 @@ exports.getLatestTemplates = async (req, res) => {
       },
       take: 6,
       select: {
+        id: true,
         title: true,
         description: true,
         user: {
