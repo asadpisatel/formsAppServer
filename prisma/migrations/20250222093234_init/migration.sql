@@ -70,10 +70,10 @@ CREATE TABLE `Response` (
     `customString2Answer` VARCHAR(191) NULL,
     `customString3Answer` VARCHAR(191) NULL,
     `customString4Answer` VARCHAR(191) NULL,
-    `customText1Answer` VARCHAR(191) NULL,
-    `customText2Answer` VARCHAR(191) NULL,
-    `customText3Answer` VARCHAR(191) NULL,
-    `customText4Answer` VARCHAR(191) NULL,
+    `customText1Answer` TEXT NULL,
+    `customText2Answer` TEXT NULL,
+    `customText3Answer` TEXT NULL,
+    `customText4Answer` TEXT NULL,
     `customInt1Answer` INTEGER NULL,
     `customInt2Answer` INTEGER NULL,
     `customInt3Answer` INTEGER NULL,
@@ -83,7 +83,6 @@ CREATE TABLE `Response` (
     `customCheckbox3Answer` BOOLEAN NULL,
     `customCheckbox4Answer` BOOLEAN NULL,
 
-    UNIQUE INDEX `Response_userId_templateId_key`(`userId`, `templateId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

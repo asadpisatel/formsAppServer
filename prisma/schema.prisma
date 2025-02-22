@@ -101,10 +101,10 @@ model Response {
   customString3Answer String?
   customString4Answer String?
 
-  customText1Answer String?
-  customText2Answer String?
-  customText3Answer String?
-  customText4Answer String?
+  customText1Answer String? @db.Text
+  customText2Answer String? @db.Text
+  customText3Answer String? @db.Text
+  customText4Answer String? @db.Text
 
   customInt1Answer Int?
   customInt2Answer Int?
@@ -118,6 +118,4 @@ model Response {
 
   user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   template Template @relation(fields: [templateId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, templateId])
 }
