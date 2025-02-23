@@ -3,19 +3,15 @@ const { authMiddleware } = require("../middleware/middleware");
 const templateController = require("../controllers/templateController");
 
 router.post("/create", authMiddleware, templateController.createTemplate);
-router.post("/check", authMiddleware, templateController.checkTemplate);
-router.get(
-  "/:id/general-settings",
-  authMiddleware,
-  templateController.getGeneralSettings
-);
+router.post("/check", templateController.checkTemplate);
+router.get("/:id/general-settings", templateController.getGeneralSettings);
 router.put(
   "/:id/general-settings",
   authMiddleware,
   templateController.updateGeneralSettings
 );
 
-router.get("/:id/questions", authMiddleware, templateController.getQuestions);
+router.get("/:id/questions", templateController.getQuestions);
 router.put(
   "/:id/questions",
   authMiddleware,
