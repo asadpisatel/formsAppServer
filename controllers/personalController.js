@@ -18,3 +18,21 @@ exports.templates = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
+exports.deleteTemplates = async (req, res) => {
+  try {
+    const { ids } = req.body;
+
+    const updatedTemplates = await prisma.template.deleteMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+
+    return res.status(200).json(updatedTemplates);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
