@@ -56,6 +56,7 @@ CREATE TABLE `Template` (
     `customCheckbox4State` BOOLEAN NOT NULL DEFAULT false,
     `customCheckbox4Question` VARCHAR(191) NULL,
 
+    FULLTEXT INDEX `Template_title_description_idx`(`title`, `description`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

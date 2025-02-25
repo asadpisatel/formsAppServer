@@ -22,11 +22,11 @@ app.use(
 );
 app.use(cookieParser());
 
+app.use("/", require("./routes/homeRoute"));
 app.use("/user", require("./routes/userRoute"));
 app.use("/admin", require("./routes/adminRoute"));
 app.use("/personal", require("./routes/personalRoute"));
 app.use("/template", require("./routes/templateRoute"));
-app.use("/home", require("./routes/homeRoute"));
 app.use("/response", require("./routes/templateFillingRoute"));
 
 const port = process.env.PORT || 5000;

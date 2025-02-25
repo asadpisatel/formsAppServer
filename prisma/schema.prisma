@@ -87,6 +87,8 @@ model Template {
   customCheckbox3Question String?
   customCheckbox4State    Boolean @default(false)
   customCheckbox4Question String?
+
+  @@fulltext([title, description])
 }
 
 model Response {
