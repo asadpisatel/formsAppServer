@@ -24,7 +24,6 @@ exports.createTemplate = async (req, res) => {
 exports.checkTemplate = async (req, res) => {
   try {
     const { id } = req.body;
-    const userId = req.user?.id;
 
     const template = await prisma.template.findUnique({
       where: { id },
@@ -34,7 +33,7 @@ exports.checkTemplate = async (req, res) => {
     });
 
     return res.json({
-      isAuthor: template.userId === userId,
+      isAuthor: template.userId === req.user.id,
     });
   } catch (error) {
     return res.status(500).json({ error: error.message });
